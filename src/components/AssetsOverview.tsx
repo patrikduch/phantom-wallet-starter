@@ -17,10 +17,6 @@ interface AssetsOverviewProps {
 export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [price, setPrice] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [totalValue, setTotalValue] = useState(0);
-
 
   useEffect(() => {
     const fetchSolanaPrice = async () => {
@@ -29,11 +25,8 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
           'https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd'
         );
         setPrice(response.data.solana.usd);
-
-      } catch (err) {
-        setError('Failed to fetch price');
-      } finally {
-        setLoading(false);
+      } catch {
+        // optionally handle error here
       }
     };
 
@@ -44,7 +37,11 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
     const fetchBalance = async () => {
       if (!publicKey || !price) return;
 
-      const connection = new Connection(`https://rpc.helius.xyz/?api-key=${import.meta.env.VITE_HELIUS_API_KEY}`, "confirmed");
+      const connection = new Connection(
+        `https://rpc.helius.xyz/?api-key=${import.meta.env.VITE_HELIUS_API_KEY}`,
+        'confirmed'
+      );
+
       const balanceLamports = await connection.getBalance(new PublicKey(publicKey));
       const solBalance = balanceLamports / 1e9;
 
@@ -57,7 +54,6 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
       };
 
       setTokens([solToken]);
-      setTotalValue(solToken.value);
     };
 
     fetchBalance();
@@ -69,7 +65,6 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
     if (num >= 1_000) return (num / 1_000).toFixed(1) + 'K';
     return num.toLocaleString();
   };
-
 
   return (
     <div className="space-y-6">
