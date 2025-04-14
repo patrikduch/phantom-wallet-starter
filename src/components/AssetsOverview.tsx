@@ -30,11 +30,6 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
         );
         setPrice(response.data.solana.usd);
 
-        console.log("Fetching balance:", price);
-
-      console.log("Fetching balance for:", publicKey);
-
-
       } catch (err) {
         setError('Failed to fetch price');
       } finally {
@@ -63,10 +58,6 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
 
       setTokens([solToken]);
       setTotalValue(solToken.value);
-
-      console.log("Fetching balance:", solToken);
-      console.log("Fetching balance for:", publicKey);
-
     };
 
     fetchBalance();
