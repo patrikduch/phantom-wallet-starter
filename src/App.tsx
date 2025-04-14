@@ -132,7 +132,7 @@ function App() {
                 className={`px-4 py-2 flex items-center gap-2 ${activeTab === 'swap' ? 'border-b-2 border-purple-500 text-purple-500' : 'text-gray-400'}`}
               >
                 <ArrowDownUp className="w-4 h-4" />
-                Swap
+                Swap SOL to USDC
               </button>
           
             </div>
