@@ -1,5 +1,8 @@
+# phantom-wallet-starter
 
+Example of FE connector to a Phantom wallet.
 
+## third party dependencies
 
-npm install @jup-ag/core
+@jup-ag/core
 
