@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowDownUp, AlertCircle, RefreshCw } from 'lucide-react';
+import { ArrowDownUp, RefreshCw } from 'lucide-react';
 import { clsx } from 'clsx';
+import toast from 'react-hot-toast';
 
 interface SwapFormProps {
   onSwap: (fromAmount: number, toAmount: number) => Promise<void>;
@@ -10,20 +11,20 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
   const [fromAmount, setFromAmount] = useState('0.002');
   const [toAmount] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [txSignature, setTxSignature] = useState('');
 
   const handleSwap = async () => {
-    setError('');
-    setTxSignature('');
     setLoading(true);
+
+    const loadingToast = toast.loading('Swapping in progress...');
 
     try {
       await onSwap(parseFloat(fromAmount), parseFloat(toAmount));
+      toast.success('Swap submitted successfully!');
     } catch (err: any) {
       console.error(err);
-      setError(err.message || 'Swap failed.');
+      toast.error(err.message || 'Swap failed.');
     } finally {
+      toast.dismiss(loadingToast);
       setLoading(false);
     }
   };
@@ -36,27 +37,6 @@ export const SwapForm: React.FC<SwapFormProps> = ({ onSwap }) => {
       }}
       className="space-y-4"
     >
-      {error && (
-        <div className="flex items-center gap-2 p-4 bg-red-500/10 text-red-500 rounded-lg">
-          <AlertCircle className="w-5 h-5" />
-          <p>{error}</p>
-        </div>
-      )}
-
-      {txSignature && (
-        <div className="p-4 bg-green-500/10 text-green-500 rounded-lg text-sm">
-          Swap submitted:{' '}
-          <a
-            className="underline"
-            href={`https://solscan.io/tx/${txSignature}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View on Solscan
-          </a>
-        </div>
-      )}
-
       <div className="bg-gray-800 rounded-lg p-4">
         <div className="flex justify-between mb-2">
           <label className="text-sm text-gray-400">From</label>

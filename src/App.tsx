@@ -88,10 +88,8 @@ function App() {
       await connection.confirmTransaction(txSignature, "confirmed");
 
       console.log("✅ Swap successful:", txSignature);
-      alert(`Swap completed: ${txSignature}`);
     } catch (error: any) {
       console.error("Swap error:", error);
-      alert(error?.message || "Swap failed");
     }
   };
 

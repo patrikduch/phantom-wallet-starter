@@ -14,6 +14,7 @@ import {
 
 import { clusterApiUrl } from '@solana/web3.js';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { Toaster } from 'react-hot-toast';
 const wallets = [new PhantomWalletAdapter()];
 const endpoint = clusterApiUrl('mainnet-beta');
 
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
       <WalletModalProvider>
         <StrictMode>
           <App />
+          <Toaster position="top-right" />
         </StrictMode>
       </WalletModalProvider>
     </WalletProvider>
