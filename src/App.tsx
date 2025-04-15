@@ -22,8 +22,6 @@ function App() {
       setPublicKey(response.publicKey.toString());
       setConnected(true);
 
-      console.log(publicKey)
-
     } catch (error) {
       console.error(error);
     }
