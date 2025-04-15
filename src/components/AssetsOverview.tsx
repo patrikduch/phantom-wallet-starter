@@ -50,7 +50,7 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
         name: 'Solana',
         balance: solBalance,
         value: solBalance * price,
-        logoUrl: '/solana-sol-logo.png'
+        logoUrl: '/solana-logo.png'
       };
 
       setTokens([solToken]);
