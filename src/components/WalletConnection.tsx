@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wallet, Copy, Check } from 'lucide-react';
+import { Wallet, Copy, Check, Eye, EyeOff } from 'lucide-react';
 
 interface WalletConnectionProps {
   isConnected: boolean;
@@ -15,6 +15,7 @@ export const WalletConnection: React.FC<WalletConnectionProps> = ({
   publicKey,
 }) => {
   const [copied, setCopied] = useState(false);
+  const [showAddress, setShowAddress] = useState(true); // initially visible
 
   const handleCopy = async () => {
     if (publicKey) {
@@ -23,6 +24,8 @@ export const WalletConnection: React.FC<WalletConnectionProps> = ({
       setTimeout(() => setCopied(false), 2000);
     }
   };
+
+  const toggleAddressVisibility = () => setShowAddress((prev) => !prev);
 
   return (
     <div className="flex items-center">
@@ -36,14 +39,31 @@ export const WalletConnection: React.FC<WalletConnectionProps> = ({
         </button>
       ) : (
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="px-4 py-2 bg-gray-800 rounded-lg text-gray-300 font-mono text-sm">
+          <div className="flex items-center gap-2 relative">
+            <div
+              className={`px-4 py-2 bg-gray-800 rounded-lg text-gray-300 font-mono text-sm ${
+                showAddress ? '' : 'blur-sm select-none'
+              }`}
+            >
               {publicKey?.slice(0, 4)}...{publicKey?.slice(-4)}
             </div>
+
+            <button
+              onClick={toggleAddressVisibility}
+              className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+              title={showAddress ? 'Hide address' : 'Show address'}
+            >
+              {showAddress ? (
+                <EyeOff className="w-4 h-4 text-gray-400 hover:text-white" />
+              ) : (
+                <Eye className="w-4 h-4 text-gray-400 hover:text-white" />
+              )}
+            </button>
+
             <button
               onClick={handleCopy}
               className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
-              title={copied ? "Copied!" : "Copy address"}
+              title={copied ? 'Copied!' : 'Copy address'}
             >
               {copied ? (
                 <Check className="w-4 h-4 text-green-500" />
@@ -52,6 +72,7 @@ export const WalletConnection: React.FC<WalletConnectionProps> = ({
               )}
             </button>
           </div>
+
           <button
             onClick={onDisconnect}
             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"

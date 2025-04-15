@@ -30,7 +30,6 @@ function App() {
   };
 
 
-
   const disconnectWallet = async () => {
     try {
       const { solana } = window as any;
