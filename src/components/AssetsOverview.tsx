@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Connection, PublicKey } from '@solana/web3.js';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface Token {
   symbol: string;
@@ -17,6 +18,7 @@ interface AssetsOverviewProps {
 export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [price, setPrice] = useState<number | null>(null);
+  const [hideBalances, setHideBalances] = useState(true);
 
   useEffect(() => {
     const fetchSolanaPrice = async () => {
@@ -26,7 +28,7 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
         );
         setPrice(response.data.solana.usd);
       } catch {
-        // optionally handle error here
+        // handle error silently or log
       }
     };
 
@@ -60,8 +62,8 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
   }, [publicKey, price]);
 
   const formatLargeNumber = (num: number) => {
-    if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1);
-    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1);
+    if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + 'B';
+    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + 'M';
     if (num >= 1_000) return (num / 1_000).toFixed(1) + 'K';
     return num.toLocaleString();
   };
@@ -69,8 +71,15 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
   return (
     <div className="space-y-6">
       <div className="bg-gray-800 rounded-xl">
-        <div className="p-4 border-b border-gray-700">
+        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
           <h2 className="text-lg font-semibold">Your Assets</h2>
+          <button
+            onClick={() => setHideBalances(!hideBalances)}
+            className="text-gray-400 hover:text-white transition"
+            aria-label="Toggle balance visibility"
+          >
+            {hideBalances ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
         <div className="divide-y divide-gray-700">
           {tokens.map((token) => (
@@ -88,7 +97,7 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">
+                  <p className={`font-medium ${hideBalances ? 'blur-sm select-none' : ''}`}>
                     {token.symbol === 'SOL'
                       ? token.balance.toLocaleString(undefined, {
                           minimumFractionDigits: 4,
@@ -96,7 +105,7 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
                         })
                       : formatLargeNumber(token.value)}
                   </p>
-                  <p className="text-sm text-gray-400">
+                  <p className={`text-sm text-gray-400 ${hideBalances ? 'blur-sm select-none' : ''}`}>
                     {token.balance.toLocaleString()} {token.symbol}
                   </p>
                 </div>
