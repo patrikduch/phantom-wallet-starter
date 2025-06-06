@@ -96,18 +96,31 @@ export const AssetsOverview: React.FC<AssetsOverviewProps> = ({ publicKey }) => 
                     <p className="text-sm text-gray-400">{token.symbol}</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className={`font-medium ${hideBalances ? 'blur-sm select-none' : ''}`}>
-                    {token.symbol === 'SOL'
-                      ? token.balance.toLocaleString(undefined, {
-                          minimumFractionDigits: 4,
-                          maximumFractionDigits: 9,
-                        })
-                      : formatLargeNumber(token.value)}
-                  </p>
-                  <p className={`text-sm text-gray-400 ${hideBalances ? 'blur-sm select-none' : ''}`}>
-                    {token.balance.toLocaleString()} {token.symbol}
-                  </p>
+                <div className="text-right space-y-1">
+                  {/* Token Value */}
+                  <div className="relative">
+                    <span className={`font-medium ${hideBalances ? 'blur-xl select-none' : ''}`}>
+                      {token.symbol === 'SOL'
+                        ? token.balance.toLocaleString(undefined, {
+                            minimumFractionDigits: 4,
+                            maximumFractionDigits: 9,
+                          })
+                        : formatLargeNumber(token.value)}
+                    </span>
+                    {hideBalances && (
+                      <span className="absolute inset-0 bg-gray-900/40 backdrop-blur-md rounded" />
+                    )}
+                  </div>
+
+                  {/* Token Balance */}
+                  <div className="relative">
+                    <span className={`text-sm text-gray-400 ${hideBalances ? 'blur-xl select-none' : ''}`}>
+                      {token.balance.toLocaleString()} {token.symbol}
+                    </span>
+                    {hideBalances && (
+                      <span className="absolute inset-0 bg-gray-900/40 backdrop-blur-md rounded" />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
