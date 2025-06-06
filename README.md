@@ -1,6 +1,6 @@
 # phantom-wallet-starter
 
-Example of FE connector to a Phantom wallet.
+Example of a frontend connector to a Phantom wallet.
 
 ## Features
 
@@ -18,7 +18,7 @@ Example of FE connector to a Phantom wallet.
 - Jupiter Aggregator API
 - react-hot-toast for notifications
 
-## Third-party dependencies
+## Third-party Dependencies
 
 - `@jup-ag/core` – Jupiter Aggregator SDK
 - `@solana/web3.js` – Solana Web3 SDK
@@ -31,8 +31,35 @@ Example of FE connector to a Phantom wallet.
 
 ## Setup
 
-```bash
-git clone https://github.com/patrikduch/phantom-wallet-starter.git
-cd phantom-wallet-starter
-npm install
-npm run dev
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/patrikduch/phantom-wallet-starter.git
+   cd phantom-wallet-starter
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Create the `.env` file**:
+
+   Copy the example environment file and fill in any required values.
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   > Make sure to edit `.env` and provide any required values such as RPC URLs or API keys.
+
+4. **Start the development server**:
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open in browser**:
+
+   Visit [http://localhost:3000](http://localhost:3000) to view the app.
